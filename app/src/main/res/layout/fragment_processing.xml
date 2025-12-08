@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.kuemiin.animalfight.utils.player.AppPlayer.State" />
+
+        <import type="androidx.lifecycle.MutableLiveData" />
+
+        <variable
+            name="viewmodel"
+            type="com.kuemiin.animalfight.ui.fragment.processing.ProcessingViewModel" />
+
+        <variable
+            name="liveStatePlayer"
+            type="MutableLiveData&lt;State>" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F7F1E5"
+        android:fitsSystemWindows="false">
+
+        <carbon.widget.ImageView
+            android:id="@+id/imvBack"
+            deboundClick="@{v -> viewmodel.onClickBack()}"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:foreground="@drawable/ripple_press_imv_oval"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/ic_arrow_left_black"
+            app:carbon_rippleRadius="@dimen/_13sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <carbon.widget.TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pp_800"
+            android:text="@string/processing"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/imvBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imvBack" />
+
+        <carbon.widget.ConstraintLayout
+            android:id="@+id/clPercent"
+            android:layout_width="@dimen/_135sdp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_40sdp"
+            app:carbon_cornerRadius="@dimen/_6sdp"
+            app:layout_constraintDimensionRatio="158:250"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+
+            <carbon.widget.ImageView
+                android:id="@+id/imvThumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:carbon_cornerRadius="@dimen/_6sdp" />
+
+            <carbon.widget.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:carbon_cornerRadius="@dimen/_6sdp"
+                android:background="@color/black_50"/>
+
+            <carbon.widget.TextView
+                android:id="@+id/tvPercent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                app:carbon_cornerRadius="@dimen/_6sdp"
+                android:text="@{viewmodel.percent + `%`}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20ssp"
+                tools:text="60%" />
+
+        </carbon.widget.ConstraintLayout>
+
+        <com.kuemiin.animalfight.widgets.RectangleProgress
+            android:id="@+id/prRectangle"
+            setProgressProcessing="@{viewmodel.percent}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="-9dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/clPercent"
+            app:layout_constraintEnd_toEndOf="@+id/clPercent"
+            app:layout_constraintStart_toStartOf="@+id/clPercent"
+            app:layout_constraintTop_toTopOf="@+id/clPercent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center"
+            android:text="@string/des_processing"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clPercent" />
+
+
+        <!--   banner bottom-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bannerViewBottom"
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible">
+
+            <include
+                android:id="@+id/includeLayoutBannerBottom"
+                layout="@layout/native_banner_ad_trythis" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--   native collap banner bottom-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/nativeCollapBanner"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <include
+                android:id="@+id/includeLayoutBanner"
+                layout="@layout/native_admob_ad_collap_trythis"
+                android:visibility="gone" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_container_nativeCollapBanner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    layout="@layout/data_place_holder_mrec_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <ImageView
+                android:id="@+id/btnCollapsibleBanner"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_close_collapse"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--   native collap bottom-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/nativeCollap"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <include
+                android:id="@+id/includeLayout"
+                layout="@layout/native_admob_ad_collap_trythis"
+                android:visibility="gone" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_container_nativeCollap"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    layout="@layout/data_place_holder_mrec_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <ImageView
+                android:id="@+id/btnCollapsible"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:src="@drawable/ic_close_collapse"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btnCollapsible1"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/btnCollapsible"
+                app:layout_constraintEnd_toEndOf="@id/btnCollapsible"
+                app:layout_constraintStart_toStartOf="@id/btnCollapsible"
+                app:layout_constraintTop_toTopOf="@id/btnCollapsible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

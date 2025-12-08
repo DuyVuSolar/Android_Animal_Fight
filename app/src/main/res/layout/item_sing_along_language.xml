@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.kuemiin.animalfight.model.Language" />
+
+        <variable
+            name="viewmodel"
+            type="com.kuemiin.animalfight.ui.fragment.language.LanguageViewModel" />
+
+    </data>
+
+    <carbon.widget.ConstraintLayout
+        android:onClick="@{()->viewmodel.onClickItemLanguage(item)}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@color/white"
+        android:stateListAnimator="@xml/button_fade"
+        app:carbon_cornerRadius="@dimen/_8sdp">
+
+        <carbon.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:carbon_cornerRadius="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="160:88"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <carbon.widget.ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/bg_language_singalong_selected"
+                android:visibility="@{item.selected ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <carbon.widget.ImageView
+                android:id="@+id/iv_country"
+                loadFlagIconCircle="@{item.alpha2}"
+                android:layout_width="@dimen/_32sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_9sdp"
+                android:background="#F0F0F0"
+                android:scaleType="centerCrop"
+                app:carbon_cornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/lan_china" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/pp_700"
+                android:singleLine="true"
+                android:text="@{item.title}"
+                android:textColor="#101922"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toStartOf="@+id/iv_country"
+                app:layout_constraintTop_toBottomOf="@+id/iv_country"
+                tools:text="English" />
+
+
+        </carbon.widget.ConstraintLayout>
+
+    </carbon.widget.ConstraintLayout>
+
+</layout>
