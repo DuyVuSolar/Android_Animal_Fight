@@ -19,7 +19,6 @@ import com.kuemiin.animalfight.base.BaseActivity
 import com.kuemiin.animalfight.base.BaseFragment
 import com.kuemiin.animalfight.databinding.ActivityMainBinding
 import com.kuemiin.animalfight.receiver.NetworkStateMonitor
-import com.kuemiin.animalfight.ui.activity.splash.SplashActivity
 import com.kuemiin.animalfight.utils.NetworkUtils
 import com.kuemiin.animalfight.utils.extension.exhaustive
 import com.kuemiin.animalfight.utils.extension.observer
@@ -128,7 +127,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun restartActivity() {
-        startActivity(SplashActivity.newIntent(this).apply {
+        startActivity(newIntent(this).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         })
         overridePendingTransition(R.anim.wait_anim, R.anim.fade_in)

@@ -1,16 +1,12 @@
 package com.kuemiin.animalfight.ui.activity.main
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
@@ -20,20 +16,15 @@ import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.VideoOptions
-import com.google.android.gms.ads.nativead.MediaView
-import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
-import com.kuemiin.base.extension.show
 import com.kuemiin.animalfight.R
 import com.kuemiin.animalfight.databinding.ActivityMain2Binding
-import com.kuemiin.animalfight.ui.activity.intro.IntroActivity
 import com.kuemiin.animalfight.utils.MaxUtils
 import com.kuemiin.animalfight.utils.MaxUtils.ISCHECKCLICK
 import com.kuemiin.animalfight.utils.MaxUtils.ISCHECKCLICKSPLASH
 import com.kuemiin.animalfight.utils.MaxUtils.logRevAdjust
 import com.kuemiin.animalfight.utils.MaxUtils.populateUnifiedNativeAdView
-import com.kuemiin.animalfight.utils.extension.gone
 import com.kuemiin.animalfight.utils.extension.isBuildLargerThan
 
 @Suppress("DEPRECATION")

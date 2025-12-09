@@ -498,8 +498,8 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
                         releaseCamera()
                         viewModel.cameraProvider?.unbindAll()
                         viewModel.backgroundExecutor?.shutdown()
-                        viewModel.poseLandmarkerHelper?.clearPoseLandmarker()
-                        viewModel.poseLandmarkerHelper = null
+//                        viewModel.poseLandmarkerHelper?.clearPoseLandmarker()
+//                        viewModel.poseLandmarkerHelper = null
                         effectFilter = EFFECT_SING_A_SONG
                         cameraFacing = CameraSelector.LENS_FACING_FRONT
 
@@ -538,8 +538,8 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
                                     Long.MAX_VALUE,
                                     TimeUnit.NANOSECONDS
                                 )
-                                viewModel.poseLandmarkerHelper?.clearPoseLandmarker()
-                                viewModel.poseLandmarkerHelper = null
+//                                viewModel.poseLandmarkerHelper?.clearPoseLandmarker()
+//                                viewModel.poseLandmarkerHelper = null
                                 releaseCamera()
                             } catch (e: Exception) {
                                 loge("DUYVD123 --- $e")
@@ -922,8 +922,8 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
                             Long.MAX_VALUE,
                             TimeUnit.NANOSECONDS
                         )
-                        viewModel.poseLandmarkerHelper?.clearPoseLandmarker()
-                        viewModel.poseLandmarkerHelper = null
+//                        viewModel.poseLandmarkerHelper?.clearPoseLandmarker()
+//                        viewModel.poseLandmarkerHelper = null
                         releaseCamera()
                         binding.renderView.postDelayed(
                             { openCamera(viewModel.mCurrentCameraId) },
@@ -954,18 +954,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
                 object : CameraBuilder.SurfaceCallback {
                     override fun callback(surfaceTexture: SurfaceTexture?) {
                         viewModel.mSurfaceTexture = surfaceTexture
-                        viewModel.createExecutor(requireActivity()) { results ->
-                            if (results.results.isEmpty() || results.results[0].faceLandmarks()
-                                    .isEmpty()
-                            ) return@createExecutor
-                            try {
-                                results.results[0].let { faceLandmarkerResult ->
-
-                                }
-                            } catch (e: Exception) {
-                                loge("DUYVD123 --- $e")
-                            }
-                        }
                     }
                 })
                 .enableRecord(
@@ -1222,7 +1210,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
         viewModel.viewModelScope.launch(Dispatchers.IO) {
             try {
                 viewModel.releaseAppPlayer()
-                viewModel.poseLandmarkerHelper = null
+//                viewModel.poseLandmarkerHelper = null
                 mCameraDevice?.close()
                 mCameraDevice = null
             } catch (e: Exception) {

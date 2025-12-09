@@ -18,6 +18,7 @@
     <application
         android:name=".BaseApplication"
         android:allowBackup="false"
+        android:debuggable="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
@@ -29,7 +30,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidTemplate"
         android:usesCleartextTraffic="true"
-        tools:replace="android:allowBackup,android:dataExtractionRules,android:fullBackupContent">
+        tools:replace="android:allowBackup,android:dataExtractionRules,android:fullBackupContent"
+        tools:ignore="HardcodedDebugMode">
         <meta-data
             android:name="com.google.android.gms.ads.flag.NATIVE_AD_DEBUGGER_ENABLED"
             android:value="false" />
@@ -46,33 +48,11 @@
             android:value="ca-app-pub-2622117118790581~3892694929" />
 
         <activity
-            android:name=".ui.activity.splash.SplashActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="DiscouragedApi">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-<!---->
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".ui.activity.choose_language.ChooseLanguageActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi" />
 
-        <activity
-            android:name=".ui.activity.intro.IntroActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="DiscouragedApi" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
 
         <activity
             android:name=".ui.activity.main.MainActivity"
@@ -80,18 +60,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize|adjustNothing"
             tools:ignore="DiscouragedApi">
-<!--                <intent-filter>-->
-<!--                    <action android:name="android.intent.action.MAIN" />-->
-<!--                    <category android:name="android.intent.category.LAUNCHER" />-->
-<!--                </intent-filter>-->
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.activity.guide.GuideActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize|adjustNothing"
-            tools:ignore="DiscouragedApi"/>
 
         <activity
             android:name=".ui.activity.main.MainActivity2"

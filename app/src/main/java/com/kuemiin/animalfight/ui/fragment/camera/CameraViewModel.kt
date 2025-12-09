@@ -25,11 +25,9 @@ import androidx.databinding.ObservableInt
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
-import cn.ezandroid.lib.ezfilter.extra.sticker.Bitmap2025QuizFilter
 import cn.ezandroid.lib.ezfilter.extra.sticker.Bitmap2025QuizFilter.EFFECT_ANIMAL_EFFECT
 import cn.ezandroid.lib.ezfilter.extra.sticker.Bitmap2025QuizFilter.EFFECT_SING_A_SONG
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.kuemiin.animalfight.BaseApplication.Companion.cameraFacing
 import com.kuemiin.animalfight.R
@@ -38,11 +36,9 @@ import com.kuemiin.animalfight.data.store.DataStoreHelper
 import com.kuemiin.animalfight.model.EffectModel
 import com.kuemiin.animalfight.model.EncoderModel
 import com.kuemiin.animalfight.model.QuizModel
-import com.kuemiin.animalfight.pose.FaceLandmarkerHelper
 import com.kuemiin.animalfight.ui.fragment.camera.canvas.CanvasAnimalFileFilter
 import com.kuemiin.animalfight.ui.fragment.camera.canvas.CanvasTiktokFileFilter
 import com.kuemiin.animalfight.utils.Constant
-import com.kuemiin.animalfight.utils.Constant.MAX_TIME_RECORD_15s
 import com.kuemiin.animalfight.utils.Constant.MAX_TIME_RECORD_60s
 import com.kuemiin.animalfight.utils.Constant.timeRecord
 import com.kuemiin.animalfight.utils.FileUtils
@@ -81,7 +77,6 @@ class CameraViewModel @Inject constructor(
 
     var firstNoInternet : Boolean? = null
     var enableStartRecord : ObservableBoolean = ObservableBoolean(false)
-    var poseLandmarkerHelper: FaceLandmarkerHelper? = null
 
     var isRecording: ObservableBoolean = ObservableBoolean(false)
     var isShowListFilter: ObservableBoolean = ObservableBoolean(false)
@@ -255,26 +250,6 @@ class CameraViewModel @Inject constructor(
         }
     }
 
-    fun createExecutor(
-        activity: FragmentActivity,
-        callbacks: (FaceLandmarkerHelper.ResultBundle) -> Unit
-    ) {
-        backgroundExecutor = Executors.newSingleThreadExecutor()
-//        setUpCamera(activity)
-        backgroundExecutor?.execute {
-            poseLandmarkerHelper = FaceLandmarkerHelper(
-                activity,
-                object : FaceLandmarkerHelper.LandmarkerListener {
-                    override fun onResults(resultBundle: FaceLandmarkerHelper.ResultBundle) {
-                        callbacks.invoke(resultBundle)
-                    }
-
-                    override fun onError(error: String, errorCode: Int) {
-                    }
-                }
-            )
-        }
-    }
 
     private fun setUpCamera(context: FragmentActivity) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -366,10 +341,10 @@ class CameraViewModel @Inject constructor(
 
     private fun detectPose(imageProxy: ImageProxy) {
         if(!isLoading.get()){
-            poseLandmarkerHelper?.detectLiveStream(
-                imageProxy,
-                cameraFacing == CameraSelector.LENS_FACING_FRONT
-            )
+//            poseLandmarkerHelper?.detectLiveStream(
+//                imageProxy,
+//                cameraFacing == CameraSelector.LENS_FACING_FRONT
+//            )
         }
     }
 

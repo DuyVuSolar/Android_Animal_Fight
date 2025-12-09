@@ -1,135 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.view.View" />
 
         <variable
-            name="item"
-            type="com.kuemiin.animalfight.model.IntroSplash" />
+            name="maxSingleton"
+            type="com.kuemiin.animalfight.utils.MaxUtils" />
+
+        <variable
+            name="viewmodel"
+            type="com.kuemiin.animalfight.ui.fragment.guide.GuideViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FAFAFA">
+        android:layout_height="match_parent">
 
-        <carbon.widget.ImageView
-            android:id="@+id/imvIntroReal"
-            setImageResNoCache="@{item.res}"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vPagerGuideFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:scaleType="centerCrop"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/bg_permission_notify" />
+            app:layout_constraintTop_toTopOf="parent" />
 
+<!--        loadingview-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:elevation="@dimen/_4sdp"
+            android:visibility="@{maxSingleton.showLoading ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone">
 
-        <!--        notification-->
-        <carbon.widget.ConstraintLayout
-            android:id="@+id/clMicrophone"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:background="#FFEADE"
-            android:visibility="@{item.perNotification ? View.VISIBLE : View.GONE}"
-            app:carbon_cornerRadius="@dimen/_12sdp"
-            app:layout_constraintBottom_toTopOf="@+id/cvNext"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                setImageAnySkipWH="@{@drawable/bg_splash}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/bg_splash" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/pp_600"
-                android:text="@string/notifications"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <carbon.widget.ImageView
-                android:id="@+id/imvSwNotify"
-                android:layout_width="@dimen/_36sdp"
-                android:layout_height="0dp"
-                android:stateListAnimator="@xml/button_fade"
-                android:src="@drawable/ic_switch_on_green"
-                android:layout_marginTop="@dimen/_3sdp"
-                app:layout_constraintDimensionRatio="134:101"
-                android:layout_marginEnd="@dimen/_10sdp"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_bg_splash_loading"
+                android:layout_width="@dimen/_107sdp"
+                android:layout_height="@dimen/_107sdp"
+                android:layout_marginBottom="@dimen/_80sdp"
+                android:src="@drawable/bg_loading_splash"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
-        </carbon.widget.ConstraintLayout>
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/iv_loading"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_38sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_bg_splash_loading"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/splash_loading" />
 
-        <!--        next-->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvNext"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginHorizontal="@dimen/_35sdp"
-            android:layout_marginBottom="260dp"
-            android:background="#1D0F5A"
-            android:stateListAnimator="@xml/button_fade"
-            android:visibility="@{item.showNativeFull ? View.GONE : View.VISIBLE}"
-            app:cardBackgroundColor="#1D0F5A"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:strokeColor="@color/transparent"
-            app:strokeWidth="@dimen/_1sdp">
-
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <TextView
+                android:id="@+id/textLoadADs"
+                app:layout_constraintTop_toBottomOf="@id/iv_bg_splash_loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_31sdp"
+                android:layout_marginEnd="@dimen/_31sdp"
+                android:fontFamily="@font/pp_800"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:text="@string/loading_ads"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_20ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <carbon.widget.TextView
-                    android:id="@+id/tvNextBottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_2sdp"
-                    android:fontFamily="@font/nunito_900"
-                    android:gravity="center"
-                    android:text="@{item.title}"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_18ssp"
-                    tools:text="@string/next" />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!--native bottom-->
-        <FrameLayout
-            android:id="@+id/fl_adplaceholder"
+<!--        load AOA-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loadingViewAOA"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="match_parent"
             android:background="@color/white"
-            android:visibility="@{item.showNative ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="visible">
+            android:elevation="@dimen/_4sdp"
+            android:visibility="@{maxSingleton.showLoadingAOA ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone">
 
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmer_container"
+            <androidx.appcompat.widget.AppCompatImageView
+                setImageAnySkipWH="@{@drawable/bg_splash}"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/bg_splash" />
 
-                <include layout="@layout/native_admob_ad_guide" />
-            </com.facebook.shimmer.ShimmerFrameLayout>
-        </FrameLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_bg_splash_loadingAOA"
+                android:layout_width="@dimen/_107sdp"
+                android:layout_height="@dimen/_107sdp"
+                android:layout_marginBottom="@dimen/_80sdp"
+                android:src="@drawable/bg_loading_splash"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/iv_loadingAOA"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_38sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_bg_splash_loadingAOA"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/splash_loading" />
+
+
+            <TextView
+                android:id="@+id/textLoadAOA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_31sdp"
+                android:layout_marginEnd="@dimen/_31sdp"
+                android:fontFamily="@font/pp_800"
+                android:gravity="center"
+                android:text="@string/welcome_back"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_20ssp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/iv_bg_splash_loadingAOA"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/loadingViewAOASplash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:visibility="gone"
+            android:background="#FFFFFF"
+            android:elevation="@dimen/_4sdp"
+            android:visibility="@{maxSingleton.showLoadingAOASplash ? View.VISIBLE : View.GONE}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

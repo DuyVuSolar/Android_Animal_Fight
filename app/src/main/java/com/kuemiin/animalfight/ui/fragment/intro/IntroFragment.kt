@@ -1,21 +1,18 @@
-package com.kuemiin.animalfight.ui.activity.intro
+package com.kuemiin.animalfight.ui.fragment.intro
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import androidx.activity.viewModels
+import android.os.Bundle
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
 import com.kuemiin.base.adapter.FragmentAdapter
 import com.kuemiin.animalfight.R
-import com.kuemiin.animalfight.base.BaseActivity
-import com.kuemiin.animalfight.databinding.ActivityIntroBinding
+import com.kuemiin.animalfight.base.BaseFragment
+import com.kuemiin.animalfight.databinding.FragmentIntroBinding
 import com.kuemiin.animalfight.model.IntroSplash
-import com.kuemiin.animalfight.ui.activity.guide.GuideActivity
-import com.kuemiin.animalfight.ui.activity.intro.fragment.IntroFragment
-import com.kuemiin.animalfight.ui.activity.main.MainActivity
+import com.kuemiin.animalfight.ui.fragment.intro.fragment.IntroPageFragment
 import com.kuemiin.animalfight.utils.MaxUtils
 import com.kuemiin.animalfight.utils.MaxUtils.getBoolean
 import com.kuemiin.animalfight.utils.MaxUtils.isCheck
@@ -28,19 +25,15 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
-class IntroActivity : BaseActivity<ActivityIntroBinding>(), IntroFragment.OnIntroActionListener {
-
-    companion object {
-        fun newIntent(context: Context): Intent = Intent(context, IntroActivity::class.java)
-    }
+class IntroFragment : BaseFragment<FragmentIntroBinding>(), IntroPageFragment.OnIntroActionListener {
 
     private var adapterFragment: FragmentAdapter? = null
 
     private val viewModel by viewModels<IntroViewModel>()
 
-    override fun getLayoutId(): Int = R.layout.activity_intro
+    override fun getLayoutId(): Int = R.layout.fragment_intro
 
-    override fun initViews() {
+    override fun setUp() {
         binding.viewmodel = viewModel
         binding.maxSingleton = MaxUtils
         setUpIntro()
@@ -53,10 +46,10 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(), IntroFragment.OnIntr
 
     private fun setUpIntro() {
         viewModel.getListIntroUse().forEach {
-            viewModel.listFragment.add(IntroFragment.newInstance(it))
+            viewModel.listFragment.add(IntroPageFragment.newInstance(it))
         }
 
-        adapterFragment = FragmentAdapter(supportFragmentManager, viewModel.listFragment)
+        adapterFragment = FragmentAdapter(childFragmentManager, viewModel.listFragment)
         binding.vPagerIntroFragment.adapter = adapterFragment!!
         binding.vPagerIntroFragment.addOnPageChangeListener(object :
             ViewPager.OnPageChangeListener {
@@ -71,7 +64,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(), IntroFragment.OnIntr
             override fun onPageSelected(position: Int) {
                 if (position != viewModel.indexIntro.get()) {
                     viewModel.indexIntro.set(position)
-                    this@IntroActivity.logFirebaseEvent("intro_$position")
+                    requireContext().logFirebaseEvent("intro_$position")
                 }
             }
 
@@ -106,16 +99,16 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(), IntroFragment.OnIntr
                         }
 
                         IntroViewModel.IntroEvent.OnClickStartToHome -> {
-                            this@IntroActivity.logFirebaseEvent("click_start_home_intro")
+                            requireContext().logFirebaseEvent("click_start_home_intro")
                             if (getBoolean(
-                                    this@IntroActivity,
+                                    requireActivity(),
                                     MaxUtils.ISSHOWINGINTERINTRO,
                                     true
                                 )
                             ) {
-                                if (isCheck(this@IntroActivity)) {
+                                if (isCheck(requireActivity())) {
                                     MaxUtils.loadAdmobIntro(
-                                        this@IntroActivity,
+                                        requireActivity(),
                                         object : MaxUtils.NextScreenListener {
                                             override fun nextScreen() {
                                                 viewModel.navigateToHome()
@@ -137,29 +130,10 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(), IntroFragment.OnIntr
     private fun startToHome() {
         viewModel.setShowIntro()
         if (viewModel.showGuide.get()) {
-            startActivity(MainActivity.newIntent(this))
-            finish()
+            navigateTo(R.id.action_introFragment_to_mainFragment)
         } else {
-            startActivity(GuideActivity.newIntent(this))
-            finish()
+            navigateTo(R.id.action_introFragment_to_guideFragment)
         }
-    }
-
-//    private fun startToHomeNative() {
-//        viewModel.setShowIntro()
-//        if (viewModel.showGuide.get()) {
-//            startActivity(MainActivity.newIntent(this))
-//            startActivity(Intent(this, MainActivity4::class.java).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
-//            finish()
-//        } else {
-//            startActivity(GuideActivity.newIntent(this))
-//            startActivity(Intent(this, MainActivity4::class.java).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
-//            finish()
-//        }
-//    }
-
-    override fun initEvents() {
-
     }
 
     @SuppressLint("MissingSuperCall")

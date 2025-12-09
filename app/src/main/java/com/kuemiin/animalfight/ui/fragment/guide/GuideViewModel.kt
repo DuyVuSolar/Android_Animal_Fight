@@ -1,4 +1,4 @@
-package com.kuemiin.animalfight.ui.activity.guide
+package com.kuemiin.animalfight.ui.fragment.guide
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.kuemiin.animalfight.ui.activity.splash
+package com.kuemiin.animalfight.ui.fragment.splash
 
 import android.annotation.SuppressLint
 import androidx.databinding.ObservableBoolean

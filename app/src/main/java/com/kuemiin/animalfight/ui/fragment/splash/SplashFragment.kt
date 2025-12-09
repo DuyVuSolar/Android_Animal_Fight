@@ -1,17 +1,14 @@
-package com.kuemiin.animalfight.ui.activity.splash
+package com.kuemiin.animalfight.ui.fragment.splash
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.ads.MobileAds
 import com.kuemiin.animalfight.R
-import com.kuemiin.animalfight.base.BaseActivity
-import com.kuemiin.animalfight.databinding.ActivitySplashBinding
-import com.kuemiin.animalfight.ui.activity.intro.IntroActivity
+import com.kuemiin.animalfight.base.BaseFragment
+import com.kuemiin.animalfight.databinding.FragmentSplashBinding
 import com.kuemiin.animalfight.utils.GoogleMobileAdsConsentManager
 import com.kuemiin.animalfight.utils.MaxUtils
 import com.kuemiin.animalfight.utils.MaxUtils.getBoolean
@@ -23,17 +20,11 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
-class SplashActivity : BaseActivity<ActivitySplashBinding>() {
-
-    companion object {
-        fun newIntent(context: Context): Intent =
-            Intent(context, SplashActivity::class.java).apply {
-            }
-    }
+class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     private val viewModel by viewModels<SplashViewModel>()
 
-    override fun getLayoutId(): Int = R.layout.activity_splash
+    override fun getLayoutId(): Int = R.layout.fragment_splash
 
     private val isMobileAdsInitializeCalled = AtomicBoolean(false)
 
@@ -44,37 +35,31 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             return
         }
         CoroutineScope(Dispatchers.IO).launch {
-            MobileAds.initialize(this@SplashActivity) {}
+            MobileAds.initialize(requireContext()) {}
             MobileAds.setAppMuted(true)
         }
     }
 
-    override fun initViews() {
-        if (!isTaskRoot) {
-            finish()
+    override fun setUp() {
+        if (!requireActivity().isTaskRoot) {
+            requireActivity().finish()
             return
         }
-
-        googleMobileAdsConsentManager =
-            GoogleMobileAdsConsentManager.getInstance(this)
-        if (!getBoolean(this, "gatherStatus", false)) {
-            googleMobileAdsConsentManager.gatherConsent(this) { consentError ->
-                if (consentError != null) {
-                }
-                MaxUtils.setBoolean(this, "gatherStatus", true)
+        googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(requireContext())
+        if (!getBoolean(requireActivity(), "gatherStatus", false)) {
+            googleMobileAdsConsentManager.gatherConsent(requireActivity()) { consentError ->
+                if (consentError != null) { }
+                MaxUtils.setBoolean(requireActivity(), "gatherStatus", true)
 
                 if (googleMobileAdsConsentManager.canRequestAds) {
                     initializeMobileAdsSdk()
                     initView()
                 }
-
             }
         } else {
-
             if (googleMobileAdsConsentManager.canRequestAds) {
                 initializeMobileAdsSdk()
             }
-
             initView()
         }
     }
@@ -86,7 +71,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         binding.maxSingleton = MaxUtils
 
         MaxUtils.loadNativeSplash(
-            this@SplashActivity, binding.bannerView, binding.shimmerContainerBanner,
+            requireActivity(), binding.bannerView, binding.shimmerContainerBanner,
             binding.flAdplaceholderBanner, object : MaxUtils.NextScreenListener {
                 override fun nextScreen() {
                     viewModel.startDelayedNavigation()
@@ -101,19 +86,19 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     when (event) {
                         is SplashViewModel.SplashEvent.ShowAdsEvent -> {
                             if (getBoolean(
-                                    this@SplashActivity,
+                                    requireActivity(),
                                     MaxUtils.ISSHOWINGADSSPLASH,
                                     true
                                 )
                             ) {
                                 if (getBoolean(
-                                        this@SplashActivity,
+                                        requireActivity(),
                                         MaxUtils.ISSHOWINGAOAFIRST,
                                         true
                                     )
                                 ) {
                                     MaxUtils.showAdIfAvailableSplash(
-                                        this@SplashActivity,
+                                        requireActivity(),
                                         object : MaxUtils.OnShowAdCompleteListener {
                                             override fun onShowAdComplete(isSuccess: Boolean) {
                                                 viewModel.nextToHome()
@@ -121,7 +106,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                                         })
                                 } else {
                                     MaxUtils.showAdmobSplash(
-                                        this@SplashActivity,
+                                        requireActivity(),
                                         object : MaxUtils.OnShowAdCompleteListener {
                                             override fun onShowAdComplete(isSuccess: Boolean) {
                                                 viewModel.nextToHome()
@@ -155,13 +140,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
     private fun navigateHome() {
-        startActivity(IntroActivity.newIntent(this@SplashActivity))
         MaxUtils.checkFromStart = false
-        finish()
+        navigateTo(R.id.action_splashFragment_to_introFragment)
     }
 
-    override fun initEvents() {
-    }
 
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {

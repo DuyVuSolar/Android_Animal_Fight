@@ -175,53 +175,55 @@ object MaxUtils {
     }
 
     fun showAdmobSplash(activity: Activity, onShowAdCompleteListener: OnShowAdCompleteListener) {
-        if (isShowingInterSplash) return
-        if (interstitialAdSplash == null) {
-            onShowAdCompleteListener.onShowAdComplete(false)
-            return
-        }
-        interstitialAdSplash?.setOnPaidEventListener { impressionData ->
-            logRevCC(activity, "inter", impressionData.valueMicros.toDouble())
-            logRevAdjust(impressionData.valueMicros.toDouble())
-        }
-        interstitialAdSplash?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                interstitialAdSplash = null
-                isShowingInterSplash = false
-                onShowAdCompleteListener.onShowAdComplete(true)
-            }
+        onShowAdCompleteListener.onShowAdComplete(false)
 
-            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                super.onAdFailedToShowFullScreenContent(p0)
-                interstitialAdSplash = null
-                isShowingInterSplash = false
-                onShowAdCompleteListener.onShowAdComplete(false)
-            }
-
-            override fun onAdShowedFullScreenContent() {
-                activity.logFirebaseEvent("ad_inter_show")
-            }
-
-            override fun onAdClicked() {
-                super.onAdClicked()
-                activity.logFirebaseEvent("ad_inter_click")
-            }
-        }
-        isShowingInterSplash = true
-
-        if (getBoolean(activity, ISSHOWINGNATIVE_FULLSPLASH, true)) {
-            if (isCheck(activity)) {
-                activity.startActivity(
-                    Intent(activity, MainActivity3::class.java)
-                )
-            }
-        }
-
-        Handler(Looper.myLooper()!!).postDelayed({
-            if (!activity.isFinishing && !activity.isDestroyed) {
-                interstitialAdSplash!!.show(activity)
-            }
-        }, 10)
+//        if (isShowingInterSplash) return
+//        if (interstitialAdSplash == null) {
+//            onShowAdCompleteListener.onShowAdComplete(false)
+//            return
+//        }
+//        interstitialAdSplash?.setOnPaidEventListener { impressionData ->
+//            logRevCC(activity, "inter", impressionData.valueMicros.toDouble())
+//            logRevAdjust(impressionData.valueMicros.toDouble())
+//        }
+//        interstitialAdSplash?.fullScreenContentCallback = object : FullScreenContentCallback() {
+//            override fun onAdDismissedFullScreenContent() {
+//                interstitialAdSplash = null
+//                isShowingInterSplash = false
+//                onShowAdCompleteListener.onShowAdComplete(true)
+//            }
+//
+//            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+//                super.onAdFailedToShowFullScreenContent(p0)
+//                interstitialAdSplash = null
+//                isShowingInterSplash = false
+//                onShowAdCompleteListener.onShowAdComplete(false)
+//            }
+//
+//            override fun onAdShowedFullScreenContent() {
+//                activity.logFirebaseEvent("ad_inter_show")
+//            }
+//
+//            override fun onAdClicked() {
+//                super.onAdClicked()
+//                activity.logFirebaseEvent("ad_inter_click")
+//            }
+//        }
+//        isShowingInterSplash = true
+//
+//        if (getBoolean(activity, ISSHOWINGNATIVE_FULLSPLASH, true)) {
+//            if (isCheck(activity)) {
+//                activity.startActivity(
+//                    Intent(activity, MainActivity3::class.java)
+//                )
+//            }
+//        }
+//
+//        Handler(Looper.myLooper()!!).postDelayed({
+//            if (!activity.isFinishing && !activity.isDestroyed) {
+//                interstitialAdSplash!!.show(activity)
+//            }
+//        }, 10)
     }
     //endregion
 

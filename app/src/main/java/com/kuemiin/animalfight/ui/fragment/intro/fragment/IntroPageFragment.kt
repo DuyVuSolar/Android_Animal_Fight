@@ -1,27 +1,24 @@
-package com.kuemiin.animalfight.ui.activity.intro.fragment
+package com.kuemiin.animalfight.ui.fragment.intro.fragment
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import com.kuemiin.animalfight.R
 import com.kuemiin.animalfight.base.BaseFragment
-import com.kuemiin.animalfight.databinding.FragmentIntroBinding
+import com.kuemiin.animalfight.databinding.FragmentIntroPageBinding
 import com.kuemiin.animalfight.model.IntroSplash
 import com.kuemiin.animalfight.utils.Constant
 import com.kuemiin.animalfight.utils.MaxUtils
 import com.kuemiin.animalfight.utils.isAndroid13
-import dagger.hilt.android.AndroidEntryPoint
 
-@Suppress("IMPLICIT_CAST_TO_ANY")
-@AndroidEntryPoint
-class IntroFragment() : BaseFragment<FragmentIntroBinding>() {
+class IntroPageFragment() : BaseFragment<FragmentIntroPageBinding>() {
 
     companion object {
-        fun newInstance(data: IntroSplash) : IntroFragment {
+        @JvmStatic
+        fun newInstance(data: IntroSplash) : IntroPageFragment {
             val args = Bundle().apply {
                 putParcelable(Constant.KEY_EXTRA_DATA, data)
             }
-            val fragment = IntroFragment()
+            val fragment = IntroPageFragment()
             fragment.arguments = args
             return fragment
         }
@@ -31,9 +28,17 @@ class IntroFragment() : BaseFragment<FragmentIntroBinding>() {
     private var mListener: OnIntroActionListener? = null
     private var data: IntroSplash ? = null
 
-    override fun getLayoutId(): Int = R.layout.fragment_intro
+    override fun getLayoutId(): Int = R.layout.fragment_intro_page
 
-    @Suppress("DEPRECATION")
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+    }
+
     override fun setUp() {
         arguments?.let {
             data = if (isAndroid13()) {
@@ -43,8 +48,6 @@ class IntroFragment() : BaseFragment<FragmentIntroBinding>() {
             }
         }
         binding.item = data
-        setUpEvent()
-        setUpAdapter()
         data ?: return
         when (data!!.index) {
             0 -> {
@@ -84,18 +87,10 @@ class IntroFragment() : BaseFragment<FragmentIntroBinding>() {
         }
     }
 
-    private fun setUpEvent() {
-
-    }
-
-    private fun setUpAdapter() {
-
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnIntroActionListener) {
-            mListener = context
+        if (parentFragment is OnIntroActionListener) {
+            mListener = parentFragment as OnIntroActionListener?
         }
     }
 

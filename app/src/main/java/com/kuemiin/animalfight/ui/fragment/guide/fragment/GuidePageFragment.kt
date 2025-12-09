@@ -1,4 +1,4 @@
-package com.kuemiin.animalfight.ui.activity.guide.fragment
+package com.kuemiin.animalfight.ui.fragment.guide.fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -6,7 +6,9 @@ import com.kuemiin.base.extension.onDebounceClick
 import com.kuemiin.animalfight.R
 import com.kuemiin.animalfight.base.BaseFragment
 import com.kuemiin.animalfight.databinding.FragmentGuideBinding
+import com.kuemiin.animalfight.databinding.FragmentGuidePageBinding
 import com.kuemiin.animalfight.model.IntroSplash
+import com.kuemiin.animalfight.ui.fragment.guide.GuideFragment
 import com.kuemiin.animalfight.utils.Constant
 import com.kuemiin.animalfight.utils.MaxUtils
 import com.kuemiin.animalfight.utils.PermissionUtils
@@ -16,16 +18,16 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
 @AndroidEntryPoint
-class GuideFragment() : BaseFragment<FragmentGuideBinding>() {
+class GuidePageFragment() : BaseFragment<FragmentGuidePageBinding>() {
 
     var hasPerNotify = false
 
     companion object {
-        fun newInstance(data: IntroSplash) : GuideFragment {
+        fun newInstance(data: IntroSplash) : GuidePageFragment {
             val args = Bundle().apply {
                 putParcelable(Constant.KEY_EXTRA_DATA, data)
             }
-            val fragment = GuideFragment()
+            val fragment = GuidePageFragment()
             fragment.arguments = args
             return fragment
         }
@@ -33,7 +35,7 @@ class GuideFragment() : BaseFragment<FragmentGuideBinding>() {
 
     private var mListener: OnGuideActionListener? = null
     private var data: IntroSplash ? = null
-    override fun getLayoutId(): Int = R.layout.fragment_guide
+    override fun getLayoutId(): Int = R.layout.fragment_guide_page
 
     override fun setUp() {
         arguments?.let {
@@ -90,8 +92,8 @@ class GuideFragment() : BaseFragment<FragmentGuideBinding>() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnGuideActionListener) {
-            mListener = context
+        if (parentFragment is OnGuideActionListener) {
+            mListener = parentFragment as OnGuideActionListener
         }
     }
     interface OnGuideActionListener {
