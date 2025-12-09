@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
@@ -22,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -31,7 +34,9 @@ import com.kuemiin.animalfight.utils.extension.isBuildLargerThan
 import timber.log.Timber
 import androidx.core.graphics.createBitmap
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import com.kuemiin.animalfight.R
 import com.kuemiin.base.extension.NAVIGATION_BAR_HEIGHT
 import com.kuemiin.animalfight.utils.LocaleHelper
 import com.kuemiin.animalfight.utils.MaxUtils.isGoneBanner
@@ -171,7 +176,50 @@ abstract class BaseFragment<BD : ViewDataBinding> : Fragment(){
                 }
                 this.statusBarColor = this.statusBarColor
             }
+        }else{
+            activity?.apply {
+                window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                window.decorView.systemUiVisibility = window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+
+                window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                val colorStatus = if (isDarkTheme()) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                window.decorView.systemUiVisibility = window.decorView.systemUiVisibility and colorStatus
+                window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                setSystemBarAppearance(
+                    isAppearanceLightStatusBars = false,
+                    isAppearanceLightNavigationBars = false
+                )
+
+                if (isBuildLargerThan(Build.VERSION_CODES.R)) {
+                    window?.decorView?.windowInsetsController?.setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS)
+                }else{
+                    window?.decorView?.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE and View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) and (android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+                }
+                window.statusBarColor = this@BaseFragment.getStatusBarColor()
+
+            }
         }
+    }
+
+    private fun Activity.setSystemBarAppearance(
+        isAppearanceLightStatusBars: Boolean,
+        isAppearanceLightNavigationBars: Boolean
+    ) {
+        window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.black)
+        val windowInsetController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetController.isAppearanceLightStatusBars = isAppearanceLightStatusBars
+        windowInsetController.isAppearanceLightNavigationBars = isAppearanceLightNavigationBars
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -202,9 +250,7 @@ abstract class BaseFragment<BD : ViewDataBinding> : Fragment(){
             keyboardHeightProvider = KeyboardHeightProvider(requireActivity())
             keyboardHeightProvider?.addKeyboardListener(getKeyboardListener())
         }
-
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -230,7 +276,9 @@ abstract class BaseFragment<BD : ViewDataBinding> : Fragment(){
 
     open fun styleFragment(): Int? = null
 
-    open fun isFullScreen(): Boolean = true
+    open fun getStatusBarColor(): Int = Color.TRANSPARENT
+
+    open fun isFullScreen(): Boolean = false
 
     open fun isDarkTheme(): Boolean = false
 

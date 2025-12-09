@@ -90,5 +90,7 @@
     <string name="choose_language">Choose Language</string>
     <string name="processing">Processing...</string>
     <string name="des_processing">It will take a minute\n Please don\'t close app during process.</string>
+    <string name="challenges">Challenges</string>
+    <string name="recorded">Recorded</string>
 
 </resources>

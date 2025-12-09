@@ -62,9 +62,7 @@ class MainFragmentViewModel @Inject constructor(
     var isLoading = ObservableBoolean(false)
     var isSelectMore = ObservableBoolean(false)
     var isEmptyRecording = ObservableBoolean(false)
-    var isReversing = ObservableBoolean(false)
     var isSelectVideo = ObservableBoolean(false)
-
 
     var hasInitAudioAfterRecorded =
         ObservableBoolean(false)//sau khi record, sẽ có 2 file đc tạo ra -> false, hiện animation zoom, click play hoặc pause -> true, ẩn animation
@@ -133,7 +131,6 @@ class MainFragmentViewModel @Inject constructor(
     //endregion
 
     fun onClickBottom(type: Int) = viewModelScope.launch {
-        if (isReversing.get()) return@launch
         if (type != typeBottomSelected.get()) {
             viewModelScope.launch {
                 pauseAudio()
@@ -151,36 +148,28 @@ class MainFragmentViewModel @Inject constructor(
         mainEventChannel.send(MainEvent.BackToHome)
     }
 
-    fun onClickReverse() = viewModelScope.launch {
-        mainEventChannel.send(MainEvent.OnClickReverse)
+    fun onClickJungleWord() = viewModelScope.launch {
+        mainEventChannel.send(MainEvent.OnClickJungleWord)
     }
 
-    fun NavigateOnClickReverse() = viewModelScope.launch {
-        mainEventChannel.send(MainEvent.NavigateOnClickReverse)
+    fun NavigateOnClickJungleWord() = viewModelScope.launch {
+        mainEventChannel.send(MainEvent.NavigateOnClickJungleWord)
     }
 
-    fun onClickSingAlong() = viewModelScope.launch {
-        mainEventChannel.send(MainEvent.OnClickSingAlong)
+    fun onClickDeathBattle() = viewModelScope.launch {
+        mainEventChannel.send(MainEvent.OnClickDeathBattle)
     }
 
-    fun NavigateTryThis() = viewModelScope.launch {
-        mainEventChannel.send(MainEvent.NavigateTryThis)
+    fun NavigateChooseLevel() = viewModelScope.launch {
+        mainEventChannel.send(MainEvent.NavigateChooseLevel)
     }
 
-    fun onClickTiktokVoice() = viewModelScope.launch {
-        mainEventChannel.send(MainEvent.OnClickTiktokVoice)
+    fun onClickQuestionAnimal() = viewModelScope.launch {
+        mainEventChannel.send(MainEvent.OnClickQuestionAnimal)
     }
 
-    fun NavigateOnClickTiktokVoice() = viewModelScope.launch {
-        mainEventChannel.send(MainEvent.NavigateOnClickTiktokVoice)
-    }
-
-    fun onClickAnimalChallenge() = viewModelScope.launch {
-        mainEventChannel.send(MainEvent.OnClickAnimalChallenge)
-    }
-
-    fun NavigateOnClickAnimalChallenge() = viewModelScope.launch {
-        mainEventChannel.send(MainEvent.NavigateOnClickAnimalChallenge)
+    fun NavigateOnClickQuestionAnimal() = viewModelScope.launch {
+        mainEventChannel.send(MainEvent.NavigateOnClickQuestionAnimal)
     }
 
     fun onClickStartRecord() = viewModelScope.launch {
@@ -503,14 +492,12 @@ class MainFragmentViewModel @Inject constructor(
         //main
         object ShowLoading : MainEvent()
         object OnClickBottom : MainEvent()
-        object OnClickReverse : MainEvent()
-        object NavigateOnClickReverse : MainEvent()
-        object OnClickSingAlong : MainEvent()
-        object NavigateTryThis : MainEvent()
-        object OnClickTiktokVoice : MainEvent()
-        object NavigateOnClickTiktokVoice : MainEvent()
-        object OnClickAnimalChallenge : MainEvent()
-        object NavigateOnClickAnimalChallenge : MainEvent()
+        object OnClickJungleWord : MainEvent()
+        object NavigateOnClickJungleWord : MainEvent()
+        object OnClickDeathBattle : MainEvent()
+        object NavigateChooseLevel : MainEvent()
+        object OnClickQuestionAnimal : MainEvent()
+        object NavigateOnClickQuestionAnimal : MainEvent()
         object BackToHome : MainEvent()
 
         //reverse

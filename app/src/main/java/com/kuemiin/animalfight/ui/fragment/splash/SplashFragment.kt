@@ -24,6 +24,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     private val viewModel by viewModels<SplashViewModel>()
 
+
+    override fun isFullScreen(): Boolean = true
+
     override fun getLayoutId(): Int = R.layout.fragment_splash
 
     private val isMobileAdsInitializeCalled = AtomicBoolean(false)

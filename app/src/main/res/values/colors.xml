@@ -52,6 +52,8 @@
     <color name="color_gray_un_selected">#E6E6E6</color>
     <color name="color_divider">#DAE1EF</color>
     <color name="color_yellow_selected">#FAE074</color>
+    <color name="color_bottom_home_selected">#F6F4F1</color>
+
 
     <color name="material_red">#ffF44336</color>
     <color name="material_green">#ff4CAF50</color>

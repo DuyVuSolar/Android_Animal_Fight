@@ -1,10 +1,7 @@
 package com.kuemiin.animalfight.ui.fragment.permission
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,18 +10,11 @@ import com.kuemiin.animalfight.R
 import com.kuemiin.animalfight.base.BaseFragment
 import com.kuemiin.animalfight.databinding.FragmentPermissionBinding
 import com.kuemiin.animalfight.model.IntroSplash
-import com.kuemiin.animalfight.ui.activity.intro.IntroViewModel
 import com.kuemiin.animalfight.ui.fragment.camera.CameraFragment
 import com.kuemiin.animalfight.utils.Constant
 import dagger.hilt.android.AndroidEntryPoint
 import com.kuemiin.animalfight.utils.MaxUtils
-import com.kuemiin.animalfight.utils.MaxUtils.getBoolean
-import com.kuemiin.animalfight.utils.MaxUtils.isCheck
-import com.kuemiin.animalfight.utils.MaxUtils.logFirebaseEvent
 import com.kuemiin.animalfight.utils.PermissionUtils
-import com.kuemiin.animalfight.utils.binding.onDeboundClick
-import com.kuemiin.animalfight.utils.binding.setEnableViewAlpha
-import com.kuemiin.animalfight.utils.binding.setImageAnyNormal
 import com.kuemiin.animalfight.utils.extension.exhaustive
 import kotlinx.coroutines.launch
 
@@ -75,7 +65,6 @@ class PermisionFragment : BaseFragment<FragmentPermissionBinding>() {
                 viewModel.introEvent.collect { event ->
                     when (event) {
                         PermisisonViewModel.IntroEvent.OnClickContinueReverse -> {
-                            setFragmentResult("key_show_reverse", bundleOf("bundleKey" to true))
                             navigateUp()
                         }
 

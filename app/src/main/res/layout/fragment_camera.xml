@@ -47,9 +47,34 @@
             android:textSize="@dimen/_18ssp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clDataCamera"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true">
+
+            <FrameLayout
+                android:clickable="false"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="0dp">
+
+                <FrameLayout
+                    android:id="@+id/clDataClick"
+                    android:clickable="false"
+                    android:layout_width="match_parent"
+                    android:background="#84ED4141"
+                    android:layout_gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_height="match_parent">
+
+                </FrameLayout>
+            </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imvClick"

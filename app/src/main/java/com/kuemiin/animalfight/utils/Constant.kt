@@ -32,7 +32,6 @@ object Constant {
 
     const val MAIN_TYPE_HOME = 0
     const val MAIN_TYPE_RECORDINGS = 1
-    const val MAIN_TYPE_SETTING = 2
 
     const val TODAY = "Today"
     const val YESTERDAY = "Yesterday"
@@ -300,9 +299,9 @@ object Constant {
 
     fun getAllListMath(alpha: String): ArrayList<EffectModel> {
         val res = arrayListOf<EffectModel>()
-        res.add(EffectModel(EFFECT_SING_A_SONG, R.drawable.bg_sing_a_song_with_word, singWithWordsEnglish.size, getListSingAlongFromAlpha(alpha)))
-        res.add(EffectModel(EFFECT_TIKTOK_VOICE, R.drawable.bg_tiktok_voice_full, tiktokVoices.size, getListTikTokVoiceClone()))
-        res.add(EffectModel(EFFECT_ANIMAL_EFFECT, R.drawable.bg_tiktok_voice_full, tiktokVoices.size, getListTikTokVoiceClone()))
+        res.add(EffectModel(EFFECT_SING_A_SONG, R.drawable.bg_transparent, singWithWordsEnglish.size, getListSingAlongFromAlpha(alpha)))
+        res.add(EffectModel(EFFECT_TIKTOK_VOICE, R.drawable.bg_transparent, tiktokVoices.size, getListTikTokVoiceClone()))
+        res.add(EffectModel(EFFECT_ANIMAL_EFFECT, R.drawable.bg_transparent, tiktokVoices.size, getListTikTokVoiceClone()))
         return res
     }
 

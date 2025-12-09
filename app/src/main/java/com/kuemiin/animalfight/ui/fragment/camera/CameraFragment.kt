@@ -10,10 +10,16 @@ import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
 import android.os.Handler
 import android.os.Looper
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.camera.core.CameraSelector
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.updateLayoutParams
@@ -689,6 +695,14 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
                                 val listAll = listOf(mAnimalRender1, mAnimalRender2, mAnimalRender3, mAnimalRender4,mAnimalRender5, mAnimalRender6, mAnimalRender7, mAnimalRender8)
                                 listAll.forEach { mRenderPipeline?.addFilterRender(it) }
 
+
+
+//                                val layoutParams = binding.clDataClick.layoutParams as FrameLayout.LayoutParams
+//                                layoutParams.width = previewWidth
+//                                layoutParams.height = previewHeight
+//                                binding.clDataClick.layoutParams = layoutParams
+
+
                                 val listAnimalLineOne = listOf(
                                     mAnimalRender1, mAnimalRender2, mAnimalRender3, mAnimalRender4
                                 )
@@ -698,12 +712,29 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
                                 listAnimalLineOne.forEach {
                                     it?.setPosition(xAnimal.toInt(), yAnimal.toInt())
                                     it?.currentQuiz = Random.nextInt(0,totalAnimals) // chỉ lấy số lẻ là animal chưa select, max 1-> 9
+
+                                    val newImageView = ImageView(requireContext()).apply {
+                                        // Set the image resource for the ImageView
+                                        setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.bg_question_animal))
+                                        scaleType = ImageView.ScaleType.CENTER_CROP
+                                    }
+                                    val layoutParams = FrameLayout.LayoutParams(widthAnimal, widthAnimal)
+                                    layoutParams.gravity = Gravity.TOP or Gravity.START
+                                    layoutParams.setMargins(xAnimal.toInt(), yAnimal.toInt(), 0, 0)
+                                    newImageView.layoutParams = layoutParams
+                                    binding.clDataClick.addView(newImageView)
+
+
                                     xAnimal+= widthAnimal + spaceAnimal
+
                                 }
 
                                 val listAnimalLineTwo = listOf(
                                     mAnimalRender5, mAnimalRender6, mAnimalRender7, mAnimalRender8
                                 )
+
+
+
                                 xAnimal = previewWidth - widthRect + (2.5f * spaceAnimal)
                                 yAnimal = yAnimal + spaceAnimal / 2 + widthAnimal
                                 listAnimalLineTwo.forEach {
